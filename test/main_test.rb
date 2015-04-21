@@ -4,6 +4,7 @@ $VERBOSE = false
 require 'active_record'
 require 'sqlite3'
 require 'workflow'
+require 'workflow/draw'
 require 'mocha/setup'
 require 'stringio'
 #require 'ruby-debug'
@@ -201,7 +202,7 @@ class MainTest < ActiveRecordTestCase
         end
       end
     end
-    assert_not_nil c.workflow_spec.on_transition_proc
+    refute_nil c.workflow_spec.on_transition_proc
     c.new.increment!
   end
 
@@ -246,7 +247,7 @@ class MainTest < ActiveRecordTestCase
 
   test 'correct exception for event, that is not allowed in current state' do
     o = assert_state 'some order', 'accepted'
-    assert_raise Workflow::NoTransitionAllowed do
+    assert_raises Workflow::NoTransitionAllowed do
       o.accept!
     end
   end
@@ -387,7 +388,7 @@ class MainTest < ActiveRecordTestCase
         end
       end
     end
-    assert_raise Workflow::WorkflowError do
+    assert_raises Workflow::WorkflowError do
       Problem.new.solve!
     end
   end
@@ -496,7 +497,7 @@ class MainTest < ActiveRecordTestCase
 
     article = article_class.new
     assert article.new?
-    assert_raise Workflow::TransitionHalted do
+    assert_raises Workflow::TransitionHalted do
       article.reject! 'Too funny'
     end
     assert_nil article.too_far
@@ -585,4 +586,3 @@ class MainTest < ActiveRecordTestCase
   end
 
 end
-

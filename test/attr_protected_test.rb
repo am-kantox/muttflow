@@ -7,7 +7,12 @@ require 'sqlite3'
 require 'workflow'
 require 'mocha/setup'
 require 'stringio'
-require 'protected_attributes' if ActiveRecord::VERSION::MAJOR >= 4
+
+begin
+  require 'protected_attributes' if ActiveRecord::VERSION::MAJOR >= 4
+rescue LoadError => e
+  puts "Failed to load protected_atributes. Original error message: «#{e}»."
+end
 
 ActiveRecord::Migration.verbose = false
 
@@ -25,8 +30,7 @@ class AttrProtectedTestOrder < ActiveRecord::Base
     state :shipped
   end
 
-  attr_accessible :title # protecting all the other attributes
-
+  # attr_accessible :title # protecting all the other attributes
 end
 
 AttrProtectedTestOrder.logger = Logger.new(STDOUT) # active_record 2.3 expects a logger instance
@@ -104,4 +108,3 @@ class AttrProtectedTest < ActiveRecordTestCase
   end
 
 end
-
