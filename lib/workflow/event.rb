@@ -1,11 +1,15 @@
+require 'mutations'
+
 module Workflow
   class Event
 
     attr_accessor :name, :transitions_to, :meta, :action, :condition
+    attr_reader :mutation
 
-    def initialize(name, transitions_to, condition = nil, meta = {}, &action)
+    def initialize(name, transitions_to, mutation = nil, condition = nil, meta = {}, &action)
       @name = name
       @transitions_to = transitions_to.to_sym
+      self.mutation = mutation # use setter to accept string, symbol and class as param
       @meta = meta
       @action = action
       @condition = if condition.nil? || condition.is_a?(Symbol) || condition.respond_to?(:call)
@@ -13,6 +17,17 @@ module Workflow
                    else
                      raise TypeError, 'condition must be nil, an instance method name symbol or a callable (eg. a proc or lambda)'
                    end
+    end
+
+    def mutation= neu
+      m = case neu
+          when Symbol, String
+            Kernel.const_defined?(neu.to_s) && Kernel.const_get(neu.to_s)
+          when Class then neu
+          else NilClass
+          end
+
+      @mutation = m <= ::Mutations::Command ? m : nil
     end
 
     def condition_applicable?(object)

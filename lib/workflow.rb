@@ -3,6 +3,7 @@ require 'rubygems'
 require 'workflow/specification'
 require 'workflow/adapters/active_record'
 require 'workflow/adapters/remodel'
+require 'workflow/mutation_base'
 
 # See also README.markdown for documentation
 module Workflow
@@ -65,7 +66,7 @@ module Workflow
             end
 
             define_method "can_#{event_name}?" do
-              return !!current_state.events.first_applicable(event_name, self)
+              !!current_state.events.first_applicable(event_name, self)
             end
           end
         end
@@ -110,7 +111,8 @@ module Workflow
       return false if @halted
 
       begin
-        return_value = run_action(event.action, *args) || run_action_callback(event.name, *args)
+        return_value = event.mutation.run(workflow: self, args: args) if event.mutation
+        return_value = run_action(event.action, *args) || run_action_callback(event.name, *args) || return_value
       rescue StandardError => e
         run_on_error(e, from, to, name, *args)
       end

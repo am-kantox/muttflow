@@ -1,7 +1,7 @@
 begin
   require 'rubygems'
 
-  gem 'ruby-graphviz', '~> 1.0.0'
+  gem 'ruby-graphviz', '~> 1.2'
   gem 'activesupport'
 
   require 'graphviz'
@@ -66,7 +66,7 @@ module Workflow
       # Generate the graph
       filename = File.join(options[:path], "#{options[:name]}.#{options[:format]}")
 
-      graph.output options[:format] => "'#{filename}'"
+      graph.output options[:format] => "#{filename}"
 
       puts "
       Please run the following to open the generated file:

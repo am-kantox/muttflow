@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'minitest/autorun'
+require 'minitest/reporters'
 require 'active_record'
 
 class << Minitest::Test
@@ -36,3 +37,5 @@ class ActiveRecordTestCase < Minitest::Test
   def default_test
   end
 end
+
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new # spec-like progress

@@ -16,15 +16,14 @@ Rake::TestTask.new do |t|
 end
 
 Rake::TestTask.new do |t|
-  t.name = 'test_without_new_versions'
+  t.name = 'test_mutations'
   t.libs << 'test'
   t.verbose = true
   t.warning = true
-  t.pattern = 'test/*_test.rb'
+  t.pattern = 'test/mutations_test.rb'
 end
 
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include("lib/**/*.rb")
   rdoc.options << "-S"
 end
-

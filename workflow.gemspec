@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'workflow/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "muttflow"
+  gem.name          = "workflow"
   gem.version       = Workflow::VERSION
   gem.authors       = ['Vladimir Dobriakov', 'Kantox LTD']
   gem.email         = ['vladimir@geekq.net', 'aleksei.matiushkin@kantox.com']
@@ -27,9 +27,15 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'bundler', ['>= 1.0.0']
   gem.add_development_dependency 'activerecord'
   gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'minitest-reporters'
+  gem.add_development_dependency 'rspec', '~> 2.12'
+  gem.add_development_dependency 'cucumber', '~> 1.3'
   gem.add_development_dependency 'mocha'
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'ruby-graphviz', ['~> 1.0.0']
+  gem.add_development_dependency 'pry'
+  gem.add_development_dependency 'awesome_print'
+  gem.add_development_dependency 'ruby-graphviz', ['~> 1.2.0']
 
   gem.required_ruby_version = '>= 1.9.2'
 end
